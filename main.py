@@ -2,14 +2,16 @@ import sys
 import os
 import json
 from recipe_scrapers import scrape_me
+import subprocess
+import platform  # Import platform module
 
 config_file = "config.json"
 
 def load_config():
-    if os.path.exists(config_file):
+    try:
         with open(config_file, 'r') as f:
             return json.load(f)
-    else:
+    except FileNotFoundError:
         return {"storage_location": ""}
 
 def save_config(config):
@@ -19,16 +21,12 @@ def save_config(config):
 def setup_storage():
     config = load_config()
     if not config["storage_location"]:
-        red_start = "\033[91m"
-        red_end = "\033[0m"
-        
-        print(f"{red_start}\nFirst-time setup: Where would you like to store your recipes?{red_end}")
-        print(f"{red_start}Press Enter to use the default location (./recipes/), or specify a new path.{red_end}")
+        print("\033[91m\nFirst-time setup: Where would you like to store your recipes?\033[0m")
+        print("\033[91mPress Enter to use the default location (./recipes/), or specify a new path.\033[0m")
         location = input().strip() or "./recipes/"
         config["storage_location"] = location
         save_config(config)
-        if not os.path.exists(location):
-            os.makedirs(location)
+    os.makedirs(config["storage_location"], exist_ok=True)
     return config["storage_location"]
 
 def save_recipe(data):
@@ -37,20 +35,36 @@ def save_recipe(data):
     filepath = os.path.join(storage_location, filename)
     with open(filepath, 'w') as f:
         json.dump(data, f)
-    print(f"Recipe saved to {filepath}")
+    print(f"\033[92mRecipe saved to {filepath}\033[0m")
+
+def clear_screen():
+    if platform.system() == "Windows":
+        subprocess.run(["cls"], check=True, shell=True)
+    else:
+        subprocess.run(["clear"], check=True)
 
 def browse_recipes():
     storage_location = setup_storage()
     recipes = [f.replace('_', ' ').replace('.json', '') for f in os.listdir(storage_location) if f.endswith('.json')]
-    for idx, recipe in enumerate(recipes, start=1):
-        print(f"{idx}. {recipe}")
-    choice = int(input("Select a recipe by number: ")) - 1
-    if 0 <= choice < len(recipes):
-        with open(os.path.join(storage_location, recipes[choice].replace(' ', '_') + '.json'), 'r') as f:
-            recipe_data = json.load(f)
-        format_output(recipe_data)
-    else:
-        print("Invalid selection.")
+    print("\n".join(f"\033[96m{idx}. {recipe}\033[0m" for idx, recipe in enumerate(recipes, start=1)))
+    while True:
+        try:
+            user_input = input("Select a recipe by number (or type 'exit' to quit): ").strip()
+            if user_input.lower() == 'exit':
+                print("Exiting.")
+                return
+            choice = int(user_input) - 1
+            if 0 <= choice < len(recipes):
+                clear_screen()
+                filepath = os.path.join(storage_location, recipes[choice].replace(' ', '_') + '.json')
+                with open(filepath, 'r') as f:
+                    recipe_data = json.load(f)
+                format_output(recipe_data)
+                break
+            else:
+                print("\033[91mInvalid selection. Please enter a number from the list.\033[0m")
+        except ValueError:
+            print("\033[91mPlease enter a valid number.\033[0m")
 
 def safe_access(callable_attr):
     try:
@@ -73,31 +87,22 @@ def scrape_recipe(url):
     except Exception as e:
         return {"error": str(e)}
 
-def print_header(header, newline=True):
-    if newline:
-        print(f"\n\033[96m{header}:\033[0m", end=' ')
-    else:
-        print(f"\033[96m{header}:\033[0m", end=' ')
-
 def format_output(data):
     if "error" in data:
-        print("Error:", data["error"])
+        print("\033[91mError:\033[0m", data["error"])
         return
 
-    print(f"\n{data['title']}")
+    print(f"\033[92m{data['title']}\033[0m")
     if data['author']:
-        print(data['author'])
-
+        print(f"\033[96mby {data['author']}\033[0m")
     for key in ["total_time", "yields", "ingredients", "instructions", "equipment"]:
-        value = data[key]
+        value = data.get(key)
         if value:
-            print_header(key.capitalize(), newline=True if key != "author" else False)
+            print(f"\033[96m{key.capitalize()}:\033[0m", end="")
             if isinstance(value, list):
-                print('')
-                for item in value:
-                    print(f"- {item}")
+                print("\n" + "\n".join(f"- {item}" for item in value))
             else:
-                print(f"\n{value}")
+                print(f" {value}")
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
