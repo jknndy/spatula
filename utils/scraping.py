@@ -26,7 +26,7 @@ def scrape_recipe(url):
 KEY_ALIASES = {
     "name": "title",
     "author": "source",
-    "total_time": "total_time",
+    "total_time": "duration",
     "yields": "servings",
     "ingredients": "ingredients",
     "directions": "instructions",
