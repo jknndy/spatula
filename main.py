@@ -7,10 +7,10 @@ from utils.storage import save_recipe
 
 def process_input(input_value):
     try:
-        if os.path.isfile(input_value):  # Check if it's a file
+        if os.path.isfile(input_value):
             process_json_file(input_value)
         else:
-            process_url(input_value)  # Treat it as a URL if not a file
+            process_url(input_value)
     except Exception as e:
         print(f"Error: {e}")
 
@@ -31,11 +31,9 @@ def process_json_file(file_path):
     try:
         with open(file_path, 'r') as file:
             recipes = json.load(file)
-            # Ensure recipes is a list for consistency
-            if isinstance(recipes, dict):  # Single recipe case
+            if isinstance(recipes, dict):
                 recipes = [recipes]
             for recipe_data in recipes:
-                # Map keys using aliases
                 mapped_recipe_data = {KEY_ALIASES.get(k, k): v for k, v in recipe_data.items()}
                 format_output(mapped_recipe_data)
                 save_recipe(mapped_recipe_data)

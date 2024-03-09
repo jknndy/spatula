@@ -12,6 +12,8 @@ def scrape_recipe(url):
         return {
             "title": safe_access(scraper.title),
             "author": safe_access(scraper.author),
+            "prep_time": safe_access(scraper.prep_time),
+            "cook_time": safe_access(scraper.cook_time),
             "total_time": safe_access(scraper.total_time),
             "yields": safe_access(scraper.yields),
             "ingredients": safe_access(scraper.ingredients),
@@ -21,13 +23,12 @@ def scrape_recipe(url):
     except Exception as e:
         return {"error": str(e)}
 
-# Define a mapping of aliases to standard keys
 KEY_ALIASES = {
     "name": "title",
     "author": "source",
     "total_time": "total_time",
     "yields": "servings",
     "ingredients": "ingredients",
-    "instructions": "directions",
+    "directions": "instructions",
     "equipment": "equipment"
 }

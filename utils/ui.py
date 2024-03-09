@@ -19,7 +19,7 @@ def format_output(data, print_output=True):
         print(f"\033[92m{data['title']}\033[0m")
         if data.get('author'):
             print(f"\033[96mby {data['author']}\033[0m")
-        for key in ["total_time", "yields", "ingredients", "instructions", "equipment"]:
+        for key in ["total_time", "cook_time", "prep_time", "yields", "ingredients", "instructions", "equipment"]:
             value = data.get(key)
             if value:
                 print(f"\033[96m{key.capitalize()}:\033[0m", end="")
