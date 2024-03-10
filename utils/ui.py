@@ -45,16 +45,18 @@ def browse_recipes():
     adjusted_recipes_list = [{
         'title': recipe.get('title', recipe['filename'].replace('_', ' ').replace('.json', '')),
         'picture': recipe.get('picture', 'https://via.placeholder.com/150'),
-        'site_name': recipe.get('site_name', '')
+        'site_name': recipe.get('site_name', ''),
+        'filename': recipe['filename']
     } for recipe in recipes_list]
 
     return adjusted_recipes_list
 
 def get_recipe_by_filename(filename):
-    storage_location = "./recipes"
+    storage_location = setup_storage()
     filepath = os.path.join(storage_location, filename + '.json')
     if os.path.exists(filepath):
         with open(filepath, 'r') as file:
             return json.load(file)
     else:
+        print(f"Recipe file not found: {filename}.json")
         return None
