@@ -22,7 +22,8 @@ def scrape_recipe(url):
             "image": safe_access(scraper.image),
             "description": safe_access(scraper.description),
             "canonical_url": safe_access(scraper.canonical_url),
-            "category": safe_access(scraper.category)
+            "category": safe_access(scraper.category),
+            "site_name": safe_access(scraper.site_name)
         }
     except Exception as e:
         return {"error": str(e)}

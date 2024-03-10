@@ -32,15 +32,7 @@
             padding: 1rem;
             border-radius: 8px;
             max-width: 200px;
-        }
-        .grid-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .container {
-            padding: 2rem 0;
+            position: relative;
         }
         .grid-item img {
             width: 175px;
@@ -48,6 +40,16 @@
             object-fit: cover;
             border-radius: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .site-name {
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            opacity: 0.25;
+            position: absolute;
+            bottom: -16px;
+            left: 2px;
+            padding: 2px 5px;
         }
         h1 {
             text-align: center;
@@ -76,11 +78,13 @@
                     <img src="https://via.placeholder.com/200" alt="Placeholder">
                 {% endif %}
                 <p><a href="/recipe/{{ recipe.title | replace(" ", "_") }}">{{ recipe.title }}</a></p>
+                <p class="site-name">{{ recipe.site_name }}</p> <!-- Adjusted site_name display -->
             </div>
             {% endfor %}
         </div>
         <div class="btn-container">
             <a href="/" class="btn btn-primary">Back to Home</a>
+            <a href="/recipe/{{ recipes|map(attribute='title')|list|random|replace(" ", "_") }}" class="btn btn-info">Random Recipe</a>
         </div>
     </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
