@@ -16,7 +16,7 @@ def save_recipe(data):
     storage_location = setup_storage()
     filename = f"{data.get('title', data.get('name', 'Recipe')).replace(' ', '_')}.json"
     filepath = os.path.join(storage_location, filename)
-    keys_to_save = ["title", "name", "author", "source", "prep_time", "cook_time", "total_time", "duration", "yields", "servings", "ingredients", "instructions", "directions"]
+    keys_to_save = ["title", "name", "author", "source", "prep_time", "cook_time", "total_time", "duration", "yields", "servings", "ingredients", "instructions", "directions", "image"]
     data_to_save = {}
     for original_key in keys_to_save:
         if original_key in data:

@@ -18,7 +18,8 @@ def scrape_recipe(url):
             "yields": safe_access(scraper.yields),
             "ingredients": safe_access(scraper.ingredients),
             "instructions": safe_access(lambda: scraper.instructions().split('\n')),
-            "equipment": safe_access(scraper.equipment) if hasattr(scraper, 'equipment') else None
+            "equipment": safe_access(scraper.equipment) if hasattr(scraper, 'equipment') else None,
+            "image": safe_access(scraper.image)
         }
     except Exception as e:
         return {"error": str(e)}
@@ -30,5 +31,6 @@ KEY_ALIASES = {
     "yields": "servings",
     "ingredients": "ingredients",
     "directions": "instructions",
-    "equipment": "equipment"
+    "equipment": "equipment",
+    "image": "picture"
 }
