@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes List</title>
-    <!-- Include Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .grid {
@@ -18,30 +17,31 @@
             align-items: center;
         }
         .grid-item img {
-            max-width: 100%;
-            height: auto;
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
             border-radius: 5px;
+            background-color: #fff;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1 class="mt-5">Saved Recipes</h1>
-    <div class="grid mt-3">
-        {% for recipe in recipes %}
-            <div class="grid-item">
-                {% if recipe.picture_url %}
-                    <img src="{{ recipe.picture_url }}" alt="{{ recipe.title }}">
-                {% else %}
-                    <img src="https://via.placeholder.com/150" alt="Placeholder">
-                {% endif %}
-                <p>{{ recipe.title }}</p>
-            </div>
-        {% endfor %}
+    <div class="container">
+        <h1 class="mt-5">Saved Recipes</h1>
+        <div class="grid mt-3">
+                {% for recipe in recipes %}
+                <div class="grid-item">
+                    {% if recipe.picture %}
+                        <img src="{{ recipe.picture }}" alt="{{ recipe.title }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" alt="Placeholder">
+                    {% endif %}
+                    <p><a href="/recipe/{{ recipe.title | replace(" ", "_") }}">{{ recipe.title }}</a></p>
+                </div>
+            {% endfor %}
+                </div>
+        <a href="/" class="btn btn-primary mt-4">Back to Home</a>
     </div>
-    <a href="/" class="btn btn-primary mt-4">Back to Home</a>
-</div>
-<!-- Include Bootstrap and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

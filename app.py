@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for
 import os
 from utils.processing import process_input, process_url, process_json_file
-from utils.ui import browse_recipes
+from utils.ui import browse_recipes, get_recipe_by_filename
 
 app = Flask(__name__)
 
@@ -28,10 +28,18 @@ def process():
 
 @app.route('/recipes')
 def recipes():
-    recipes_list = browse_recipes()  # This should now return a list of dictionaries.
+    recipes_list = browse_recipes()
     if not recipes_list:
-        recipes_list = [{'title': 'No recipes found', 'picture_url': 'path/to/default/image.png'}]
+        recipes_list = [{'title': 'No recipes found', 'picture': ''}]
     return render_template('recipes.html', recipes=recipes_list)
+
+@app.route('/recipe/<filename>')
+def recipe_detail(filename):
+    recipe = get_recipe_by_filename(filename)
+    if recipe:
+        return render_template('recipe_detail.html', recipe=recipe)
+    else:
+        abort(404)
 
 if __name__ == '__main__':
     app.run(debug=True)

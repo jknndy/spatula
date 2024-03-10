@@ -19,7 +19,10 @@ def scrape_recipe(url):
             "ingredients": safe_access(scraper.ingredients),
             "instructions": safe_access(lambda: scraper.instructions().split('\n')),
             "equipment": safe_access(scraper.equipment) if hasattr(scraper, 'equipment') else None,
-            "image": safe_access(scraper.image)
+            "image": safe_access(scraper.image),
+            "description": safe_access(scraper.description),
+            "canonical_url": safe_access(scraper.canonical_url),
+            "category": safe_access(scraper.category)
         }
     except Exception as e:
         return {"error": str(e)}

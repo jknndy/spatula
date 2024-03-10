@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.title }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        .recipe-image {
+            max-height: 300px;
+            object-fit: cover;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .recipe-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 1rem;
+            text-align: center;
+        }
+        .author, .recipe-meta, .recipe-description {
+            padding: 0.5rem 0;
+        }
+        .author {
+            font-size: 1.1em;
+        }
+        .source-button {
+            font-size: 0.9em;
+            margin-top: 0.5rem;
+        }
+        .recipe-section {
+            background-color: #f7f7f7;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .ingredients ul, .instructions ol {
+            padding-left: 20px;
+        }
+        h1, h3 {
+            color: #007bff;
+        }
+        @media (min-width: 768px) {
+            .top-section {
+                display: flex;
+                align-items: flex-start;
+                padding-bottom: 2rem;
+            }
+            .recipe-image {
+                max-height: 300px;
+                width: 50%;
+            }
+            .recipe-details {
+                width: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container shadow">
+    <div class="top-section">
+        <img src="{{ recipe.picture }}" alt="{{ recipe.title }}" class="recipe-image">
+        
+        <div class="recipe-details">
+            <h1>{{ recipe.title }}</h1>
+            <p class="author">by {{ recipe.source }}</p>
+            {% if recipe.canonical_url %}
+            <a href="{{ recipe.canonical_url }}" target="_blank" class="btn btn-outline-primary source-button">View Recipe Source</a>
+            {% endif %}
+            <p class="recipe-meta">
+                {{ recipe.category | default("Uncategorized") }} -
+                Total Time: {{ recipe.duration }} mins -
+                Prep Time: {{ recipe.prep_time | default("None") }} -
+                Cook Time: {{ recipe.cook_time | default("None") }}
+            </p>
+            <p class="recipe-description">{{ recipe.description | default("No description provided.") }}</p>
+        </div>
+    </div>
+    
+    <div class="recipe-body">
+        <div class="recipe-section ingredients">
+            <h3>Ingredients</h3>
+            <ul>
+                {% for ingredient in recipe.ingredients %}
+                <li>{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="recipe-section instructions">
+            <h3>Instructions</h3>
+            <ol>
+                {% for instruction in recipe.instructions %}
+                <li>{{ instruction }}</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+    
+    <a href="/recipes" class="btn btn-primary mt-4">Back to Recipes</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

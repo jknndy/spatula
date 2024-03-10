@@ -30,23 +30,25 @@ def format_output(data, print_output=True):
 
 def browse_recipes():
     storage_location = setup_storage()
-    recipes = [f.replace('_', ' ').replace('.json', '') for f in os.listdir(storage_location) if f.endswith('.json')]
-    print("\n".join(f"\033[96m{idx}. {recipe}\033[0m" for idx, recipe in enumerate(recipes, start=1)))
-    while True:
-        user_input = input("Select a recipe by number (or type 'exit' to quit): ").strip()
-        if user_input.lower() == 'exit':
-            print("Exiting.")
-            return
-        try:
-            choice = int(user_input) - 1
-            if 0 <= choice < len(recipes):
-                clear_screen()
-                filepath = os.path.join(storage_location, recipes[choice].replace(' ', '_') + '.json')
-                with open(filepath, 'r') as f:
-                    recipe_data = json.load(f)
-                format_output(recipe_data)
-                break
-            else:
-                print("\033[91mInvalid selection. Please enter a number from the list.\033[0m")
-        except ValueError:
-            print("\033[91mPlease enter a valid number.\033[0m")
+    recipe_files = [f for f in os.listdir(storage_location) if f.endswith('.json')]
+    recipes_list = []
+
+    for filename in recipe_files:
+        filepath = os.path.join(storage_location, filename)
+        with open(filepath, 'r') as file:
+            recipe = json.load(file)
+            recipes_list.append({
+                'title': recipe.get('title', filename.replace('_', ' ').replace('.json', '')),
+                'picture': recipe.get('picture', 'https://via.placeholder.com/150')  # Use 'picture' as the key
+            })
+
+    return recipes_list
+
+def get_recipe_by_filename(filename):
+    storage_location = "./recipes"  # Adjust this path to where your recipes are stored
+    filepath = os.path.join(storage_location, filename + '.json')
+    if os.path.exists(filepath):
+        with open(filepath, 'r') as file:
+            return json.load(file)
+    else:
+        return None
