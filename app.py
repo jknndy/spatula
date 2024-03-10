@@ -1,6 +1,6 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template
 import os
-from utils.processing import process_input, process_json_file
+from utils.processing import process_input
 from utils.ui import browse_recipes, get_recipe_by_filename
 
 app = Flask(__name__)
