@@ -54,6 +54,15 @@
         h1, h3 {
             color: #007bff;
         }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 2rem;
+        }
+        .btn {
+            width: auto;
+        }
         @media (min-width: 768px) {
             .top-section {
                 display: flex;
@@ -110,8 +119,13 @@
         </div>
     </div>
     
-    <a href="/recipes" class="btn btn-primary mt-4">Back to Recipes</a>
-</div>
+    <div class="btn-container">
+        <a href="{{ random_recipe_url }}" class="btn btn-info">Previous</a>
+        <a href="/recipes" class="btn btn-primary">Back to Recipe Collection</a>
+        <a href="{{ random_recipe_url }}" class="btn btn-info">Next</a>
+    </div>
+
+</div></div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
