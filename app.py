@@ -38,8 +38,6 @@ def recipe_detail(filename):
     recipe = get_recipe_by_filename(filename)
     if recipe:
         return render_template('recipe_detail.html', recipe=recipe)
-    else:
-        abort(404)
 
 if __name__ == '__main__':
     app.run(debug=True)
