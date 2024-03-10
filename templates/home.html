@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Processor</title>
+    <title>spatula</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -32,16 +32,16 @@
 </head>
 <body>
 <div class="container shadow">
-    <h1 class="mt-5">Welcome to the Recipe Processor</h1>
-    <p class="lead">Enter a URL or file path to process a recipe.</p>
+    <h1 class="mt-5">Welcome to spatula</h1>
+    <p class="lead">Enter a URL to add to your collection!</p>
     <form action="/process" method="post" class="mt-4">
         <div class="form-group">
-            <label for="input_value">URL or File Path:</label>
+            <label for="input_value">URL Path:</label>
             <input type="text" class="form-control" id="input_value" name="input_value" required>
         </div>
         <button type="submit" class="btn btn-primary">Process</button>
     </form>
-    <a href="/recipes" class="btn btn-info mt-3">Browse Recipes</a>
+    <a href="/recipes" class="btn btn-info mt-3">Browse Collection</a>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

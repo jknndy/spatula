@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 import os
 from utils.processing import process_input
 from utils.ui import browse_recipes, get_recipe_by_filename
@@ -38,6 +38,9 @@ def recipe_detail(filename):
     recipe = get_recipe_by_filename(filename)
     if recipe:
         return render_template('recipe_detail.html', recipe=recipe)
+    else:
+        response = make_response("Recipe not found", 404)
+        return response
 
 if __name__ == '__main__':
     app.run(debug=True)

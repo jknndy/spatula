@@ -130,18 +130,20 @@
     <div class="recipe-section equipment">
         <h3>Equipment</h3>
         <ol>
-            {% if recipe.equipment|length > 1 %}
+            {% if recipe.equipment and recipe.equipment|length > 1 %}
                 {% for equipment in recipe.equipment %}
                     <li>{{ equipment }}</li>
                 {% endfor %}
             {% else %}
-                {% for equipment in recipe.equipment %}
-                    {{ equipment }}
-                {% endfor %}
+                {% if recipe.equipment %}
+                    {% for equipment in recipe.equipment %}
+                        {{ equipment }}
+                    {% endfor %}
+                {% endif %}
             {% endif %}
         </ol>
     </div>
-    
+        
     <div class="btn-container">
         <a href="{{ random_recipe_url }}" class="btn btn-info">Previous</a>
         <a href="/recipes" class="btn btn-primary">Back to Recipe Collection</a>
