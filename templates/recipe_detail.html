@@ -51,9 +51,17 @@
         .ingredients ul, .instructions ol {
             padding-left: 20px;
         }
-        h1, h3 {
+        h1 {
             color: #007bff;
         }
+        h3 {
+            font-size: 1.1em;
+            color: #007bff;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
         .btn-container {
             display: flex;
             justify-content: center;
@@ -68,6 +76,7 @@
                 display: flex;
                 align-items: flex-start;
                 padding-bottom: 2rem;
+                
             }
             .recipe-image {
                 max-height: 300px;
@@ -96,7 +105,7 @@
                 Prep Time: {{ recipe.prep_time | default("None") }} -
                 Cook Time: {{ recipe.cook_time | default("None") }}
             </p>
-            <p class="recipe-description">{{ recipe.description | default("No description provided.") }}</p>
+            <p class="recipe-description">{{ recipe.description | default("") }}</p>
         </div>
     </div>
     
@@ -117,6 +126,20 @@
                 {% endfor %}
             </ol>
         </div>
+    </div>
+    <div class="recipe-section equipment">
+        <h3>Equipment</h3>
+        <ol>
+            {% if recipe.equipment|length > 1 %}
+                {% for equipment in recipe.equipment %}
+                    <li>{{ equipment }}</li>
+                {% endfor %}
+            {% else %}
+                {% for equipment in recipe.equipment %}
+                    {{ equipment }}
+                {% endfor %}
+            {% endif %}
+        </ol>
     </div>
     
     <div class="btn-container">

@@ -37,23 +37,21 @@ def browse_recipes():
         filepath = os.path.join(storage_location, filename)
         with open(filepath, 'r') as file:
             recipe = json.load(file)
-            recipe['filename'] = filename  # Ensure 'filename' key exists for later reference
+            recipe['filename'] = filename
             recipes_list.append(recipe)
 
-    # Sort recipes by 'created_at' in descending order (newest first)
     recipes_list.sort(key=lambda x: x.get('created_at', '0'), reverse=True)
 
-    # Adjust the recipes list for the template
     adjusted_recipes_list = [{
         'title': recipe.get('title', recipe['filename'].replace('_', ' ').replace('.json', '')),
         'picture': recipe.get('picture', 'https://via.placeholder.com/150'),
-        'site_name': recipe.get('site_name', 'Default Site Name')  # Include 'site_name' if it's part of your JSON structure
+        'site_name': recipe.get('site_name', '')
     } for recipe in recipes_list]
 
     return adjusted_recipes_list
 
 def get_recipe_by_filename(filename):
-    storage_location = "./recipes"  # Adjust this path to where your recipes are stored
+    storage_location = "./recipes"
     filepath = os.path.join(storage_location, filename + '.json')
     if os.path.exists(filepath):
         with open(filepath, 'r') as file:
