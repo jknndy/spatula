@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    recent_recipes = browse_recipes()[:4]
+    return render_template('home.html', recent_recipes=recent_recipes)
 
 @app.route('/process', methods=['POST'])
 def process():

@@ -10,13 +10,13 @@
             background-color: #f8f9fa;
             color: #333;
         }
-        .container {
+        .container, .recent-recipes {
             background-color: #fff;
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
             max-width: 600px;
-            margin-top: 2rem;
+            margin: 2rem auto;
         }
         h1, .lead {
             text-align: center;
@@ -28,9 +28,12 @@
             width: 100%;
             margin-top: 0.5rem;
         }
+        .recent-recipes {
+            margin: 0 auto;
+            text-align: center;
+        }
     </style>
 </head>
-<body>
 <div class="container shadow">
     <h1 class="mt-5">Welcome to spatula</h1>
     <p class="lead">Enter a URL to add to your collection!</p>
@@ -42,6 +45,18 @@
         <button type="submit" class="btn btn-primary">Process</button>
     </form>
     <a href="/recipes" class="btn btn-info mt-3">Browse Collection</a>
+</div>
+<div class="recent-recipes">
+    <h2 class="mt-5">Recently Added Recipes</h2>
+    <div class="list-group">
+        {% for recipe in recent_recipes %}
+        <a href="/recipe/{{ recipe.filename[:-5] }}" class="list-group-item list-group-item-action">
+            {{ recipe.title }}
+        </a>
+                {% else %}
+            <p>No recent recipes found.</p>
+        {% endfor %}
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
