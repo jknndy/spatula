@@ -1,14 +1,14 @@
 import json
+from pathlib import Path
+from typing import Dict
 
-config_file = "config.json"
+config_file = Path("config.json")
 
-def load_config():
+def load_config() -> Dict[str, str]:
     try:
-        with open(config_file, 'r') as f:
-            return json.load(f)
+        return json.loads(config_file.read_text())
     except FileNotFoundError:
         return {"storage_location": ""}
 
-def save_config(config):
-    with open(config_file, 'w') as f:
-        json.dump(config, f)
+def save_config(config: Dict[str, str]) -> None:
+    config_file.write_text(json.dumps(config, indent=4))

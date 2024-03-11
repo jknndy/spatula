@@ -9,66 +9,102 @@
         body {
             background-color: #f8f9fa;
             color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .container {
             background-color: #fff;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 01 6px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             margin-top: 2rem;
+            margin-bottom: 2rem;
         }
         .grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
+            padding: 20px;
         }
         .grid-item {
-            flex: 1 0 200px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f7f7f7;
-            padding: 1rem;
-            border-radius: 8px;
-            max-width: 200px;
-            position: relative;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .grid-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
         }
         .grid-item img {
-            width: 175px;
-            height: 175px;
+            width: 100%;
+            height: auto;
             object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .grid-item p {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+        .total-time {
+            margin-top: -5px;
+            font-size: 0.85em;
+            color: #666;
         }
         .site-name {
             font-size: 0.75rem;
             font-weight: bold;
-            text-transform: uppercase;
-            opacity: 0.25;
+            color: #007bff;
+            background-color: rgba(255,255,255,0.9);
+            border-radius: 5px;
+            padding: 3px 6px;
             position: absolute;
-            bottom: -16px;
-            left: 2px;
-            padding: 2px 5px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-transform: uppercase;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none; /* Hide the always-visible category name */
+        }
+        .grid-item:hover .site-name {
+            display: block; /* Only show on hover */
         }
         h1 {
             text-align: center;
             color: #007bff;
+            margin-bottom: 1rem;
         }
-        .btn-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 2rem;
+        #siteFilter {
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
         }
-        .btn {
-            width: auto;
+        .back-home {
+            display: block;
+            width: 100%;
+            padding: 0.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
     <div class="container shadow">
         <h1 class="mt-5">Recipe Collection</h1>
+        <a href="/" class="back-home">Return Home</a>
         <select id="siteFilter" onchange="filterRecipes()">
             <option value="">All Sites</option>
             {% for site_name in site_names %}
@@ -78,14 +114,15 @@
     
         <div class="grid mt-3" id="recipeGrid">
             {% for recipe in recipes %}
-            <div class="grid-item" data-site-name="{{ recipe.site_name }}">
+            <div class="grid-item" data-site-name="{{ recipe.site_name }}" onclick="window.location.href='/recipe/{{ recipe.title | replace(' ', '_') | safe }}'">
                 {% if recipe.picture %}
                     <img src="{{ recipe.picture }}" alt="{{ recipe.title }}">
                 {% else %}
                     <img src="https://via.placeholder.com/200" alt="Placeholder">
                 {% endif %}
-                <p><a href="/recipe/{{ recipe.title | replace(" ", "_") }}">{{ recipe.title }}</a></p>
-                <p class="site-name">{{ recipe.site_name }}</p>
+                <p>{{ recipe.duration }}</p>
+                <p>{{ recipe.title }}</p>
+                <p class="site-name">{{ recipe.site_name }}</p> 
             </div>
             {% endfor %}
         </div>

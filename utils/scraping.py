@@ -1,12 +1,13 @@
+from typing import Dict, Optional, Callable
 from recipe_scrapers import scrape_me
 
-def safe_access(callable_attr):
+def safe_access(callable_attr: Callable[[], str]) -> Optional[str]:
     try:
         return callable_attr()
     except Exception:
         return None
 
-def scrape_recipe(url):
+def scrape_recipe(url: str) -> Dict[str, Optional[str]]:
     try:
         scraper = scrape_me(url)
         return {
