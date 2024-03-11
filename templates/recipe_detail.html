@@ -100,10 +100,10 @@
             <a href="{{ recipe.canonical_url }}" target="_blank" class="btn btn-outline-primary source-button">View Recipe Source</a>
             {% endif %}
             <p class="recipe-meta">
-                {{ recipe.category | default("Uncategorized") }} -
-                Total Time: {{ recipe.duration }} mins -
-                Prep Time: {{ recipe.prep_time | default("None") }} -
-                Cook Time: {{ recipe.cook_time | default("None") }}
+                {{ recipe.category | default("Uncategorized") }} -<br>
+                {% if recipe.duration and recipe.duration != "None" %}Total Time: {{ recipe.duration }} mins <br>{% endif %}
+                {% if recipe.prep_time and recipe.prep_time != "None" %}Prep Time: {{ recipe.prep_time }} <br>{% endif %}
+                {% if recipe.cook_time and recipe.cook_time != "None" %}Cook Time: {{ recipe.cook_time }}{% endif %}
             </p>
             <p class="recipe-description">{{ recipe.description | default("") }}</p>
         </div>
@@ -112,9 +112,12 @@
     <div class="recipe-body">
         <div class="recipe-section ingredients">
             <h3>Ingredients</h3>
-            <ul>
+            <ul style="list-style-type: none;">
                 {% for ingredient in recipe.ingredients %}
-                <li>{{ ingredient }}</li>
+                <li>
+                    <input type="checkbox" id="{{ ingredient }}" name="ingredients">
+                    <label for="{{ ingredient }}">{{ ingredient }}</label>
+                </li>
                 {% endfor %}
             </ul>
         </div>
@@ -127,23 +130,20 @@
             </ol>
         </div>
     </div>
+    {% if recipe.equipment %}
     <div class="recipe-section equipment">
         <h3>Equipment</h3>
         <ol>
-            {% if recipe.equipment and recipe.equipment|length > 1 %}
+            {% if recipe.equipment|length > 0 %}
                 {% for equipment in recipe.equipment %}
                     <li>{{ equipment }}</li>
                 {% endfor %}
             {% else %}
-                {% if recipe.equipment %}
-                    {% for equipment in recipe.equipment %}
-                        {{ equipment }}
-                    {% endfor %}
-                {% endif %}
+                <li>{{ recipe.equipment }}</li>
             {% endif %}
         </ol>
     </div>
-        
+    {% endif %}          
     <div class="btn-container">
         <a href="{{ random_recipe_url }}" class="btn btn-info">Previous</a>
         <a href="/recipes" class="btn btn-primary">Back to Recipe Collection</a>
