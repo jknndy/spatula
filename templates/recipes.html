@@ -68,10 +68,17 @@
 </head>
 <body>
     <div class="container shadow">
-        <h1 class="mt-5">Saved Recipes</h1>
-        <div class="grid mt-3">
+        <h1 class="mt-5">Recipe Collection</h1>
+        <select id="siteFilter" onchange="filterRecipes()">
+            <option value="">All Sites</option>
+            {% for site_name in site_names %}
+            <option value="{{ site_name }}">{{ site_name }}</option>
+            {% endfor %}
+        </select>
+    
+        <div class="grid mt-3" id="recipeGrid">
             {% for recipe in recipes %}
-            <div class="grid-item">
+            <div class="grid-item" data-site-name="{{ recipe.site_name }}">
                 {% if recipe.picture %}
                     <img src="{{ recipe.picture }}" alt="{{ recipe.title }}">
                 {% else %}
@@ -82,11 +89,23 @@
             </div>
             {% endfor %}
         </div>
-        <div class="btn-container">
-            <a href="/" class="btn btn-primary">Back to Home</a>
-            <a href="/recipe/{{ recipes|map(attribute='title')|list|random|replace(" ", "_") }}" class="btn btn-info">Random Recipe</a>
-        </div>
     </div>
+    <script>
+    function filterRecipes() {
+        var filterValue = document.getElementById('siteFilter').value.toLowerCase();
+        var gridItems = document.getElementById('recipeGrid').getElementsByClassName('grid-item');
+    
+        for (var i = 0; i < gridItems.length; i++) {
+            var siteName = gridItems[i].getAttribute('data-site-name').toLowerCase();
+            if (filterValue === "" || siteName === filterValue) {
+                gridItems[i].style.display = "";
+            } else {
+                gridItems[i].style.display = "none";
+            }
+        }
+    }
+    </script>
+    
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

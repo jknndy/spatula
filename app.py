@@ -31,8 +31,9 @@ def process():
 def recipes():
     recipes_list = browse_recipes()
     if not recipes_list:
-        recipes_list = [{'title': 'No recipes found', 'picture': ''}]
-    return render_template('recipes.html', recipes=recipes_list)
+        recipes_list = [{'title': 'No recipes found', 'picture': '', 'site_name': ''}]
+    site_names = sorted(set(recipe['site_name'] for recipe in recipes_list if recipe.get('site_name')))
+    return render_template('recipes.html', recipes=recipes_list, site_names=site_names)
 
 @app.route('/recipe/<filename>')
 def recipe_detail(filename):
